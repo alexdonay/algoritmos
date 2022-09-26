@@ -18,3 +18,4 @@ lista = [1, 5,0 ,0,15, 20, 24, 45, 67, 76, 78, 100]
 pos = buscaBinária(lista, chave)
 
 print(pos)
+
