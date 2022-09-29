@@ -38,3 +38,5 @@ print(pilha.pilha)
 pilha.adicionar(1)
 pilha.adicionar(3)
 print(pilha.pilha)
+
+
