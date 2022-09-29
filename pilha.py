@@ -1,42 +1,36 @@
-class pilhaCustomizada:
+class PilhaCuston:
     pilha = []
     tamanho = -1
+    tipo = ""
     def __init__(self, tamanho):
         self.tamanho = tamanho
-
-    def verificaVazio(self):
-        return True if (len(self.pilha)==0) else False
     def verificaCheio(self):
-        return True if (len(self.pilha)< self.tamanho) else False
-    def adicionar(self, value):
-        if(self.verificaCheio()):
-            self.pilha.append(value)
-        else:
-            print("Pilha cheia")
-    def remover(self):
+        return self.tamanho == len(self.pilha)
+    def verificaVazio(self):
+        return self.pilha==[]
+    def verificaTipo(self, value):
+        return self.tipo != type(value)
+    def add(self, value):
         if(self.verificaVazio()):
-            print("Pilha Vazia")
+            self.tipo = type(value)
+            self.pilha.append(value)
+        elif(self.verificaCheio() or self.verificaTipo(value)):
+            print("estouro")
+        else:
+            self.pilha.append(value)
+    def rm(self):
+        if(self.verificaVazio()):
+            print("pilha vazia")
         else:
             self.pilha.pop()
-    def toString(self):
-        return self.pilha
-pilha = pilhaCustomizada(3)
+            
 
-pilha.adicionar(1)
-pilha.adicionar(3)
-print(pilha.toString())
+pi = PilhaCuston(2)
 
-pilha.remover()
-print(pilha.pilha)
-pilha.remover()
-print(pilha.pilha)
-pilha.remover()
-print(pilha.pilha)
-pilha.adicionar(1)
-pilha.adicionar(3)
-print(pilha.pilha)
-pilha.adicionar(1)
-pilha.adicionar(3)
-print(pilha.pilha)
+pi.add(2)
 
+pi.rm()
+
+
+print(pi.pilha)
 
