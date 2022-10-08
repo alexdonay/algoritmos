@@ -2,7 +2,6 @@ tamanho = 0
 inicio = 0
 fim = -1
 num_elementos = 0
-
 def Fila_Criar(tamanhoFila, tipoFila):
     global tamanho, valor_Inicial
     match tipoFila:
@@ -33,7 +32,7 @@ def Enfileirar(fila, elemento):
         fila[fim] = elemento
         num_elementos += 1 
         return fila
-    else:
+    else: 
         return "Tipo de dado inválido ou pilha cheia"
         
 def desinfileirar():
@@ -48,7 +47,7 @@ def desinfileirar():
 def mostrainicio(fila):
     return fila[inicio]
 
-novaFila = Fila_Criar(3,"I")
+novaFila = Fila_Criar(3,"F")
 
 Enfileirar(novaFila,1)
 print(f"inicio {inicio} fim {fim} tamanho {tamanho}")
