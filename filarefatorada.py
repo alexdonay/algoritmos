@@ -47,7 +47,7 @@ def desinfileirar():
 def mostrainicio(fila):
     return fila[inicio]
 
-novaFila = Fila_Criar(3,"F")
+novaFila = Fila_Criar(3,"I")
 
 Enfileirar(novaFila,1)
 print(f"inicio {inicio} fim {fim} tamanho {tamanho}")
