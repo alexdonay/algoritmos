@@ -34,7 +34,7 @@ def Fila_Vazia():
 def Enfileirar(fila, elemento):
     global fim, num_elementos
     if Fila_Cheia() == False and type(elemento) == type(fila[0]):
-        if fim == tamanho -1:
+        if fim == tamanho-1:
             fim = 0
         else:
             fim += 1
@@ -51,7 +51,9 @@ def desinfileirar():
         else:
             inicio += 1
         num_elementos -= 1
-
+    else:
+        print("Fila vazia")
+    
 def mostrainicio(fila):
     return fila[inicio]
 
@@ -99,3 +101,11 @@ desinfileirar()
 print(f"inicio {inicio} fim {fim} tamanho {tamanho}")
 print(novaFila)
 print(imprimirFila(novaFila))
+desinfileirar()
+print(f"inicio {inicio} fim {fim} tamanho {tamanho}")
+desinfileirar()
+print(f"inicio {inicio} fim {fim} tamanho {tamanho}")
+desinfileirar()
+print(f"inicio {inicio} fim {fim} tamanho {tamanho}")
+desinfileirar()
+print(f"inicio {inicio} fim {fim} tamanho {tamanho}")
