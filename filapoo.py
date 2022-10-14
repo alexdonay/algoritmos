@@ -1,4 +1,11 @@
 class Fila:
+    arr = []
+    tamanho = 0
+    inicio = 0
+    fim = 0
+    qtElementos = 0
+    tipo = ""
+
     def __init__(self, tamanhoFila) -> None:
         self.tamanho = tamanhoFila
         for i in range(self.tamanho):
