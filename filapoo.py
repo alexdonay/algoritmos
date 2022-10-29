@@ -18,9 +18,11 @@ class Fila:
         return True if self.qtElementos == self.tamanho else False
 
     def Enfileirar(self,elemento):
-        if not self.Fila_Cheia():
+        self.tipo = type(elemento) if self.Fila_Vazia else self.tipo
+        
+        if not self.Fila_Cheia() and self.tipo == type(elemento):
             self.arr[self.inicio] = elemento
-            self.inicio = 0 if self.inicio == self.tamanho - 1 else 1 + self.inicio
+            self.inicio = 0 if self.inicio == self.tamanho - 1 else self.inicio + 1
             self.qtElementos += 1
         else:
             raise Exception("Fila está cheia")
