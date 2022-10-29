@@ -19,18 +19,13 @@ class PilhaCuston:
         else:
             self.pilha.append(value)
     def rm(self):
-        if(self.verificaVazio()):
-            print("pilha vazia")
-        else:
-            self.pilha.pop()
-            
+        print("pilha vazia") if(self.verificaVazio()) else self.pilha.pop()
 
 pi = PilhaCuston(2)
 
 pi.add(2)
 
 pi.rm()
-
 
 print(pi.pilha)
 
