@@ -17,11 +17,21 @@ class Fila:
     def filacheia(self):
         return True if self.__qtelementos == self.__tamanho else False
 
+<<<<<<< HEAD
+    def Enfileirar(self,elemento):
+        self.tipo = type(elemento) if self.Fila_Vazia else self.tipo
+        
+        if not self.Fila_Cheia() and self.tipo == type(elemento):
+            self.arr[self.inicio] = elemento
+            self.inicio = 0 if self.inicio == self.tamanho - 1 else self.inicio + 1
+            self.qtElementos += 1
+=======
     def enfileirar(self,elemento):
         if not self.filacheia():
             self.__arr[self.__inicio] = elemento
             self.__inicio = 0 if self.__inicio == self.__tamanho - 1 else 1 + self.__inicio
             self.__qtelementos += 1
+>>>>>>> 50ac70dff8634c30b768690fcb1b15abd0fe721d
         else:
             raise Exception("Fila está cheia")
         
