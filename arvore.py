@@ -1,172 +1,251 @@
-<<<<<<< HEAD
-import time
-class Node:
-     
-    def __init__(self, chave = None, direita = None, esquerda= None):
-        self.valor = chave
-        self.dir = direita
-        self.esq = esquerda
+# Criado por: profa. Divani Barbosa Gavinier
+# Adaptado por Alexsander Batista Donay
+
+class No:
+    def __init__(self, key = None, direita = None, esquerda =None):
+        self.item = key
+        self.direita = direita
+        self.esquerda = esquerda
+
+
 class Tree:
+
     def __init__(self):
+        self.raiz = No()
         self.raiz = None
-    def insert(self, valor):
-        novo = Node(valor) 
+
+    def inserir(self, v):
+        novo = No(v)  # cria um novo Nó
         if self.raiz == None:
             self.raiz = novo
-        else: 
+        else:  # se nao for a raiz
             atual = self.raiz
             while True:
                 anterior = atual
-                if valor <= atual.valor: 
-                    atual = atual.esq
+                if v <= atual.item:  # ir para esquerdauerda
+                    atual = atual.esquerda
                     if atual == None:
-                        anterior.esq = novo
-                        return             
-                else: 
-                    atual = atual.dir
-                    if atual == None:
-                        anterior.dir = novo
+                        anterior.esquerda = novo
                         return
+                # fim da condição ir a esquerdauerda
+                else:  # ir para direitaeita
+                    atual = atual.direita
+                    if atual == None:
+                        anterior.direita = novo
+                        return
+                # fim da condição ir a direitaeita
 
-    def search(self, chave):
+    def buscar(self, chave):
         if self.raiz == None:
-            return None 
-        atual = self.raiz 
-        while atual.valor != chave: 
-            if chave < atual.valor:
-                atual = atual.esq 
+            return None  # se arvore vazia
+        atual = self.raiz  # começa a procurar desde raiz
+        while atual.item != chave:  # enquanto nao encontrou
+            if chave < atual.item:
+                atual = atual.esquerda  # caminha para esquerdauerda
             else:
-                atual = atual.dir 
-                if atual == None:
-                    return None
-        return atual   
-    def noSucessor(self, apaga): 
+                atual = atual.direita  # caminha para direitaeita
+            if atual == None:
+                return None  # encontrou uma folha -> sai
+        return atual  # terminou o laço while e chegou aqui é pq encontrou item
+
+    # O sucessor é o Nó mais a esquerdauerda da subarvore a direitaeita do No que foi passado como parametro do metodo
+    def nosucessor(self, apaga):  # O parametro é a referencia para o No que deseja-se apagar
         paidosucessor = apaga
         sucessor = apaga
-        atual = apaga.dir
+        atual = apaga.direita  # vai para a subarvore a direitaeita
 
-        while atual != None: 
+        while atual != None:  # enquanto nao chegar no Nó mais a esquerdauerda
             paidosucessor = sucessor
             sucessor = atual
-            atual = atual.esq 
+            atual = atual.esquerda  # caminha para a esquerdauerda
 
-        if sucessor != apaga.dir: 
-            paidosucessor.esq = sucessor.dir 
-            sucessor.dir = apaga.dir 
-
+        # *********************************************************************************
+        # quando sair do while "sucessor" será o Nó mais a esquerdauerda da subarvore a direitaeita
+        # "paidosucessor" será o o pai de sucessor e "apaga" o Nó que deverá ser eliminado
+        # *********************************************************************************
+        if sucessor != apaga.direita:  # se sucessor nao é o filho a direitaeita do Nó que deverá ser eliminado
+            # pai herda os filhos do sucessor que sempre serão a direitaeita
+            paidosucessor.esquerda = sucessor.direita
+            # lembrando que o sucessor nunca poderá ter filhos a esquerdauerda, pois, ele sempre será o
+            # Nó mais a esquerdauerda da subarvore a direitaeita do Nó apaga.
+            # lembrando também que sucessor sempre será o filho a esquerdauerda do pai
+            sucessor.direita = apaga.direita  # guardando a referencia a direitaeita do sucessor para
+            # quando ele assumir a posição correta na arvore
         return sucessor
 
-    def searchAndRemove(self, valor):
+    def remover(self, v):
         if self.raiz == None:
-            return False 
+            return False  # se arvore vazia
         atual = self.raiz
         pai = self.raiz
-        filhoEsq = True
-
-
-        while atual.valor!= valor:
+        filho_esquerda = True
+        # ****** Buscando o valor **********
+        while atual.item != v:  # enquanto nao encontrou
             pai = atual
-            if valor < atual.valor: 
-                atual = atual.esq
-                filhoEsq = True 
-            else: 
-                atual = atual.dir 
-                filhoEsq = False 
+            if v < atual.item:  # caminha para esquerdauerda
+                atual = atual.esquerda
+                filho_esquerda = True  # é filho a esquerdauerda? sim
+            else:  # caminha para direitaeita
+                atual = atual.direita
+                filho_esquerda = False  # é filho a esquerdauerda? NAO
             if atual == None:
-                return False
-         
-        if atual.esq == None and atual.dir == None:
-            if atual == self.raiz:
-                self.raiz = None 
-            else:
-                if filhoEsq:
-                    pai.esq =  None 
-                else:
-                    pai.dir = None 
+                return False  # encontrou uma folha -> sai
+        # fim laço while de busca do valor
 
-        elif atual.dir == None:
-            if atual == self.raiz:
-                self.raiz = atual.esq 
-            else:
-                if filhoEsq:
-                    pai.esq = atual.esq 
-                else:
-                    pai.dir = atual.esq 
-         
-        elif atual.esq == None:
-            if atual == self.raiz:
-                self.raiz = atual.dir 
-            else:
-                if filhoEsq:
-                    pai.esq = atual.dir
-                else:
-                    pai.dir = atual.dir 
+        # **************************************************************
+        # se chegou aqui quer dizer que encontrou o valor (v)
+        # "atual": contem a referencia ao No a ser eliminado
+        # "pai": contem a referencia para o pai do No a ser eliminado
+        # "filho_esquerda": é verdadeiro se atual é filho a esquerdauerda do pai
+        # **************************************************************
 
+        # Se nao possui nenhum filho (é uma folha), elimine-o
+        if atual.esquerda == None and atual.direita == None:
+            if atual == self.raiz:
+                self.raiz = None  # se raiz
+            else:
+                if filho_esquerda:
+                    pai.esquerda = None  # se for filho a esquerdauerda do pai
+                else:
+                    pai.direita = None  # se for filho a direitaeita do pai
+
+        # Se é pai e nao possui um filho a direitaeita, substitui pela subarvore a direitaeita
+        elif atual.direita == None:
+            if atual == self.raiz:
+                self.raiz = atual.esquerda  # se raiz
+            else:
+                if filho_esquerda:
+                    pai.esquerda = atual.esquerda  # se for filho a esquerdauerda do pai
+                else:
+                    pai.direita = atual.esquerda  # se for filho a direitaeita do pai
+
+        # Se é pai e nao possui um filho a esquerdauerda, substitui pela subarvore a esquerdauerda
+        elif atual.esquerda == None:
+            if atual == self.raiz:
+                self.raiz = atual.direita  # se raiz
+            else:
+                if filho_esquerda:
+                    pai.esquerda = atual.direita  # se for filho a esquerdauerda do pai
+                else:
+                    pai.direita = atual.direita  # se for  filho a direitaeita do pai
+
+        # Se possui mais de um filho, se for um avô ou outro grau maior de parentesco
         else:
-            sucessor = self.noSucessor(atual)
+            sucessor = self.nosucessor(atual)
+            # Usando sucessor que seria o Nó mais a esquerdauerda da subarvore a direitaeita do No que deseja-se remover
             if atual == self.raiz:
-                self.raiz = sucessor
+                self.raiz = sucessor  # se raiz
             else:
-                if filhoEsq:
-                    pai.esq = sucessor 
+                if filho_esquerda:
+                    pai.esquerda = sucessor  # se for filho a esquerdauerda do pai
                 else:
-                    pai.dir = sucessor 
-            sucessor.esq = atual.esq   
+                    pai.direita = sucessor  # se for filho a direitaeita do pai
+            # acertando o ponteiro a esquerdauerda do sucessor agora que ele assumiu
+            sucessor.esquerda = atual.esquerda
+            # a posição correta na arvore
 
         return True
-  
-arvore = Tree()
 
-=======
-class NodoArvore:
-    def __init__(self, chave=None, esquerda=None, direita=None):
-        self.chave = chave
-        self.esquerda = esquerda
-        self.direita = direita
+    def inOrder(self, atual):
+        if atual != None:
+            self.inOrder(atual.esquerda)
+            print(atual.item, end=" ")
+            self.inOrder(atual.direita)
 
-    def __repr__(self):
-        return '%s <- %s -> %s' % (self.esquerda and self.esquerda.chave,
-                                    self.chave,
-                                    self.direita and self.direita.chave)
-def insere(raiz, nodo):
-    """Insere um nodo em uma árvore binária de pesquisa."""
-    # Nodo deve ser inserido na raiz.
-    if raiz is None:
-        raiz = nodo
+    def preOrder(self, atual):
+        if atual != None:
+            print(atual.item, end=" ")
+            self.preOrder(atual.esquerda)
+            self.preOrder(atual.direita)
 
-    # Nodo deve ser inserido na subárvore direita.
-    elif raiz.chave < nodo.chave:
-        if raiz.direita is None:
-            raiz.direita = nodo
+    def posOrder(self, atual):
+        if atual != None:
+            self.posOrder(atual.esquerda)
+            self.posOrder(atual.direita)
+            print(atual.item, end=" ")
+
+    def altura(self, atual):
+        if atual == None or atual.esquerda == None and atual.direita == None:
+            return 0
         else:
-            insere(raiz.direita, nodo)
+            if self.altura(atual.esquerda) > self.altura(atual.direita):
+                return 1 + self.altura(atual.esquerda)
+            else:
+                return 1 + self.altura(atual.direita)
 
-    # Nodo deve ser inserido na subárvore esquerda.
-    else:
-        if raiz.esquerda is None:
-            raiz.esquerda = nodo
+    def folhas(self, atual):
+        if atual == None:
+            return 0
+        if atual.esquerda == None and atual.direita == None:
+            return 1
+        return self.folhas(atual.esquerda) + self.folhas(atual.direita)
+
+    def contarNos(self, atual):
+        if atual == None:
+            return 0
         else:
-            insere(raiz.esquerda, nodo)
-def em_ordem(raiz):
-    if not raiz:
-        return
+            return 1 + self.contarNos(atual.esquerda) + self.contarNos(atual.direita)
 
-    # Visita filho da esquerda.
-    em_ordem(raiz.esquerda)
+    def minn(self):
+        atual = self.raiz
+        anterior = None
+        while atual != None:
+            anterior = atual
+            atual = atual.esquerda
+        return anterior
 
-    # Visita nodo corrente.
-    print(raiz.chave),
+    def maxx(self):
+        atual = self.raiz
+        anterior = None
+        while atual != None:
+            anterior = atual
+            atual = atual.direita
+        return anterior
 
-    # Visita filho da direita.
-    em_ordem(raiz.direita)
-raiz = NodoArvore(40)
-for chave in [20, 60, 50, 70, 10, 30]:
-    nodo = NodoArvore(chave)
-    insere(raiz, nodo)
-# Imprime o caminhamento em ordem da árvore.
+    def caminhar(self):
+        print(" Exibindo em ordem: ", end="")
+        self.inOrder(self.raiz)
+        print("\n Exibindo em pos-ordem: ", end="")
+        self.posOrder(self.raiz)
+        print("\n Exibindo em pre-ordem: ", end="")
+        self.preOrder(self.raiz)
+        print("\n Altura da arvore: %d" % (self.altura(self.raiz)))
+        print(" Quantidade de folhas: %d" % (self.folhas(self.raiz)))
+        print(" Quantidade de Nós: %d" % (self.contarNos(self.raiz)))
+        if self.raiz != None:  # se arvore nao esta vazia
+            print(" Valor minimo: %d" % (self.minn().item))
+            print(" Valor maximo: %d" % (self.maxx().item))
 
-nodo = NodoArvore(15)
-insere(raiz, nodo)
+#### fim da classe ####
 
-em_ordem(raiz)
->>>>>>> 50ac70dff8634c30b768690fcb1b15abd0fe721d
+
+arv = Tree()
+print("Programa Arvore Binaria")
+opcao = 0
+while opcao != 5:
+    print("***********************************")
+    print("Entre com a opcao:")
+    print(" --- 1: Inserir")
+    print(" --- 2: Excluir")
+    print(" --- 3: Pesquerdauisar")
+    print(" --- 4: Exibir")
+    print(" --- 5: Sair do programa")
+    print("***********************************")
+    opcao = int(input("-> "))
+    if opcao == 1:
+        x = int(input(" Informe o valor -> "))
+        arv.inserir(x)
+    elif opcao == 2:
+        x = int(input(" Informe o valor -> "))
+        if arv.remover(x) == False:
+            print(" Valor nao encontrado!")
+    elif opcao == 3:
+        x = int(input(" Informe o valor -> "))
+        if arv.buscar(x) != None:
+            print(" Valor Encontrado")
+        else:
+            print(" Valor nao encontrado!")
+    elif opcao == 4:
+        arv.caminhar()
+    elif opcao == 5:
+        break
